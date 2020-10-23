@@ -17,22 +17,12 @@ import javax.persistence.Table;
 
 @Table(name = "reports")
 @NamedQueries({
-    @NamedQuery(
-            name = "getAllReports",
-            query = "SELECT r FROM Report AS r ORDER BY r.id DESC"
-            ),
-    @NamedQuery(
-            name = "getReportsCount",
-            query = "SELECT COUNT(r) FROM Report AS r"
-            ),
-    @NamedQuery(
-            name = "getMyAllReports",
-            query = "SELECT r FROM Report AS r WHERE r.employee = :employee ORDER BY r.id DESC"
-            ),
-    @NamedQuery(
-            name = "getMyReportsCount",
-            query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :employee"
-            )
+        @NamedQuery(name = "getAllReports", query = "SELECT r FROM Report AS r ORDER BY r.id DESC"),
+        @NamedQuery(name = "getReportsCount", query = "SELECT COUNT(r) FROM Report AS r"),
+        @NamedQuery(name = "getMyAllReports", query = "SELECT r FROM Report AS r WHERE r.employee = :employee ORDER BY r.id DESC"),
+        @NamedQuery(name = "getMyReportsCount", query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :employee"),
+        @NamedQuery(name = "getMyRecentReports", query = "SELECT r FROM Report AS r WHERE r.employee = :employee ORDER BY r.report_date DESC"),
+        @NamedQuery(name = "getMyLastReports", query = "SELECT r FROM Report AS r WHERE r.employee = :employee and r.report_date < :report_date ORDER BY r.report_date DESC")
 })
 @Entity
 public class Report {
@@ -54,6 +44,10 @@ public class Report {
     @Lob
     @Column(name = "content", nullable = false)
     private String content;
+
+    @Lob
+    @Column(name = "next", nullable = false)
+    private String next;
 
     @Column(name = "created_at", nullable = false)
     private Timestamp created_at;
@@ -99,6 +93,14 @@ public class Report {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getNext() {
+        return next;
+    }
+
+    public void setNext(String next) {
+        this.next = next;
     }
 
     public Timestamp getCreated_at() {
